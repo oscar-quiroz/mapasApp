@@ -13,7 +13,7 @@
         <div class="row">
             <div *ngFor="let item of propiedades" class="col-4 mb-2">
                 <div class="card">
-                    <img src="..." class="card-img-top">
+                    <app-mini-mapa [lnglat]="item.lngLat" class="card-img-top"></app-mini-mapa>
                     <div class="car-body">
                         <h5 class="card-title">{{item.titulo}}</h5>
                         <p class="card-text"> {{item.descripcion}}</p>
