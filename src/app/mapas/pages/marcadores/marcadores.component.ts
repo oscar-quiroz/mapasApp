@@ -10,7 +10,7 @@ import * as mapboxgl from 'mapbox-gl';
 interface Marcador {
   color: string;
   marker?: mapboxgl.Marker;
-  centro?:[number,number]
+  centro?: [number, number];
 }
 
 @Component({
@@ -54,6 +54,7 @@ export class MarcadoresComponent implements OnInit, AfterViewInit {
       zoom: this.zoomLevel,
     });
 
+    this.leerMarcadores();
     // const markerHtml: HTMLElement = document.createElement('div');
     // markerHtml.innerHTML = 'Hola mundo';
 
@@ -72,7 +73,7 @@ export class MarcadoresComponent implements OnInit, AfterViewInit {
 
     this.marcadores.push({
       color,
-      marker: nuevoMarker
+      marker: nuevoMarker,
     });
     this.guardarMarcadores();
   }
@@ -84,24 +85,53 @@ export class MarcadoresComponent implements OnInit, AfterViewInit {
   }
 
   guardarMarcadores() {
-
-    const lngLatArr:Marcador[] = [];
+    const lngLatArr: Marcador[] = [];
 
     this.marcadores.forEach((m) => {
       const color = m.color;
-      const { lng,lat } = m.marker!.getLngLat();
+      const { lng, lat } = m.marker!.getLngLat();
 
       lngLatArr.push({
-        color:color,
-        centro: [lng,lat]
-      })
+        color: color,
+        centro: [lng, lat],
+      });
     });
 
-    localStorage.setItem('marcadores', JSON.stringify(lngLatArr))
+    localStorage.setItem('marcadores', JSON.stringify(lngLatArr));
   }
 
   leerMarcadores() {
+    if (!localStorage.getItem('marcadores')) {
+      return;
+    }
 
-    //h
+    const lngLatrArr: Marcador[] = JSON.parse(
+      localStorage.getItem('marcadores')!
+    );
+
+    lngLatrArr.forEach((m) => {
+      const newMarker = new mapboxgl.Marker({
+        color: m.color,
+        draggable: true,
+      })
+        .setLngLat(m.centro!)
+        .addTo(this.mapa);
+
+      this.marcadores.push({
+        marker: newMarker,
+        color: m.color,
+      });
+
+      newMarker.on('dragend', () => {
+        this.guardarMarcadores();
+      });
+    });
+  }
+
+  borrarMarcador(i: number) {
+    console.log('borrando.............');
+    this.marcadores[i].marker?.remove();
+    this.marcadores.splice(i,1);
+    this.guardarMarcadores()
   }
 }

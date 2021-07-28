@@ -1,13 +1,13 @@
 <ul class="list-group">
-    <li class="list-group-item list-group-item-info" (click)="agregarMarcador()">+ Agregar</li>
+    <li class="list-group-item list-group-item-info" (click)="agregarMarcador()">
+        + Agregar
+    </li>
 
-
-    <li class="list-group-item" *ngFor="let item of marcadores; let i = index" (click)="irMarcando(item)" [ngStyle]="{
-        'background-color': item.color
-    }
-    ">Marker {{i+1}}</li>
+    <li class="list-group-item" *ngFor="let item of marcadores; let i = index" (click)="irMarcando(item)" (dblclick)="borrarMarcador(i)" [ngStyle]="{
+      'background-color': item.color
+    }">
+        Marker {{ i + 1 }}
+    </li>
 </ul>
 
-<div #mapa2 class="mapa-container">
-
-</div>
+<div #mapa2 class="mapa-container"></div>
