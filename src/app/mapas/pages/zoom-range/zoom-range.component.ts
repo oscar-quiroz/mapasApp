@@ -32,6 +32,8 @@ import * as mapboxgl from 'mapbox-gl';
   ],
 })
 export class ZoomRangeComponent implements OnInit, AfterViewInit, OnDestroy {
+
+
   @ViewChild('mapa2') divMapa: ElementRef;
   mapa!: mapboxgl.Map;
   zoomLevel: number = 10;
@@ -40,11 +42,12 @@ export class ZoomRangeComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
+
     this.mapa = new mapboxgl.Map({
       container: this.divMapa.nativeElement,
       style: 'mapbox://styles/mapbox/streets-v11',
       center: this.center,
-      zoom: 12,
+      zoom: this.zoomLevel,
     });
 
     this.mapa.on('zoom', (event) => {
